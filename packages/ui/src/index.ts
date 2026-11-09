@@ -1,6 +1,8 @@
-// Components
-export { Alert, type AlertProps, type AlertTone } from "./components/alert";
-export { Badge, type BadgeProps, type BadgeTone } from "./components/badge";
+// Foundations
+export { cn } from "./lib/cn";
+export { formatINR } from "./lib/format";
+
+// Actions
 export {
   Button,
   buttonClasses,
@@ -8,10 +10,34 @@ export {
   type ButtonSize,
   type ButtonVariant,
 } from "./components/button";
-export { GoalCard, type GoalCardProps, type GoalStatus } from "./components/goal-card";
-export { Input, type InputProps } from "./components/input";
-export { ProgressBar, toPercent, type ProgressBarProps } from "./components/progress-bar";
 
-// Utilities
-export { cn } from "./lib/cn";
-export { formatINR } from "./lib/format";
+// Form controls
+export { Input, type InputProps } from "./components/input";
+export { Select, type SelectOption, type SelectProps } from "./components/select";
+export { Checkbox, type CheckboxProps } from "./components/checkbox";
+export { RadioGroup, type RadioGroupProps, type RadioOption } from "./components/radio-group";
+export { Switch, type SwitchProps } from "./components/switch";
+
+// Feedback
+export { Alert, type AlertProps, type AlertTone } from "./components/alert";
+export { Badge, type BadgeProps, type BadgeTone } from "./components/badge";
+export {
+  BookingStatusBadge,
+  bookingStatusDisplay,
+  type BookingStatus,
+} from "./components/booking-status-badge";
+export { ProgressBar, toPercent, type ProgressBarProps } from "./components/progress-bar";
+export { Skeleton, type SkeletonProps } from "./components/skeleton";
+export { EmptyState, type EmptyStateProps } from "./components/empty-state";
+
+// Overlays
+export { Dialog, type DialogProps } from "./components/dialog";
+
+// Layout and navigation
+export { Card, type CardElevation, type CardProps } from "./components/card";
+export { Tabs, type TabItem, type TabsProps } from "./components/tabs";
+
+// Data display
+export { Avatar, initials, type AvatarProps, type AvatarSize } from "./components/avatar";
+export { StatCard, type StatCardProps, type StatTrend } from "./components/stat-card";
+export { GoalCard, type GoalCardProps, type GoalStatus } from "./components/goal-card";

@@ -27,10 +27,12 @@ export interface AlertProps {
   title: string;
   /** Consequence and next step. */
   children?: ReactNode;
+  /** Replace the default tone icon (icon slot). Decorative: hidden from screen readers. */
+  icon?: ReactNode;
   className?: string;
 }
 
-export function Alert({ tone = "info", title, children, className }: AlertProps) {
+export function Alert({ tone = "info", title, children, icon, className }: AlertProps) {
   const { box, bar, text, Icon } = toneStyles[tone];
   // Danger and warning interrupt assistive tech; info and success are polite.
   const role = tone === "danger" || tone === "warning" ? "alert" : "status";
@@ -40,7 +42,13 @@ export function Alert({ tone = "info", title, children, className }: AlertProps)
       className={cn("relative flex gap-3 overflow-hidden rounded-lg p-4 pl-5", box, className)}
     >
       <span aria-hidden className={cn("absolute inset-y-0 left-0 w-1", bar)} />
-      <Icon aria-hidden className={cn("mt-0.5 size-5 shrink-0", text)} />
+      {icon ? (
+        <span aria-hidden className={cn("mt-0.5 inline-flex size-5 shrink-0", text)}>
+          {icon}
+        </span>
+      ) : (
+        <Icon aria-hidden className={cn("mt-0.5 size-5 shrink-0", text)} />
+      )}
       <div className="space-y-1">
         <p className={cn("type-body-strong", text)}>{title}</p>
         {children && <div className="type-body-sm text-fg">{children}</div>}

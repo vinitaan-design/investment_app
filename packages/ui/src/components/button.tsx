@@ -38,6 +38,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   /** Shows a spinner, disables the button and announces busy state. */
   loading?: boolean;
+  /** Leading icon slot. Decorative; for icon-only buttons pass aria-label. */
   icon?: ReactNode;
 }
 
@@ -61,7 +62,15 @@ export function Button({
       className={cn(buttonClasses(variant, size, isDisabled), className)}
       {...rest}
     >
-      {loading ? <Loader2 aria-hidden className="size-5 animate-spin" /> : icon}
+      {loading ? (
+        <Loader2 aria-hidden className="size-5 animate-spin motion-reduce:animate-none" />
+      ) : (
+        icon && (
+          <span aria-hidden className="inline-flex size-5 items-center justify-center">
+            {icon}
+          </span>
+        )
+      )}
       {children}
     </button>
   );
