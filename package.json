@@ -14,7 +14,8 @@
     "typecheck": "npm run typecheck --workspaces",
     "test": "npm run test --workspaces",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check:css": "npm run check:css -w @investkea/web"
   },
   "devDependencies": {
     "prettier": "^3.9.10"

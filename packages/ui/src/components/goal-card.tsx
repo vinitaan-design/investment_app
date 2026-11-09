@@ -32,11 +32,11 @@ export function GoalCard({ title, saved, target, status, onTrackDate }: GoalCard
         <h3 className="type-h4 text-fg">{title}</h3>
         <Badge tone={badge.tone}>{badge.label}</Badge>
       </header>
-      <div className="flex items-baseline justify-between gap-2">
-        <p className="type-numeric text-fg">
-          {formatINR(saved)}
-          <span className="type-body-sm text-fg-secondary"> of {formatINR(target)}</span>
-        </p>
+      <div className="flex items-end justify-between gap-2">
+        <div>
+          <p className="type-numeric text-fg">{formatINR(saved)}</p>
+          <p className="type-body-sm text-fg-secondary">of {formatINR(target)}</p>
+        </div>
         <p className="type-label text-fg-brand">{percent}%</p>
       </div>
       <ProgressBar value={saved} max={target} label={`${title} progress`} />

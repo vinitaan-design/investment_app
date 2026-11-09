@@ -139,3 +139,16 @@ describe("₹ glyph coverage", () => {
     },
   );
 });
+
+describe("token metadata stays in sync with CSS", async () => {
+  const { colorTokens, typeStyles } = await import("./tokens");
+  const styles = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+
+  it.each(colorTokens.map((t) => [t.figma, t.cssVar.slice(2)]))("%s → --%s is defined", (_f, name) => {
+    expect(light.has(name)).toBe(true);
+  });
+
+  it.each(typeStyles.map((t) => [t.figma, t.utility]))("%s → %s utility exists", (_f, utility) => {
+    expect(styles).toContain(`@utility ${utility} {`);
+  });
+});

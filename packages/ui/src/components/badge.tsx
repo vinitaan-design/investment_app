@@ -21,7 +21,11 @@ export interface BadgeProps {
 export function Badge({ tone = "neutral", children, className }: BadgeProps) {
   return (
     <span
-      className={cn("inline-flex items-center rounded-full px-3 py-1 type-label-sm", tones[tone], className)}
+      className={cn(
+        "inline-flex shrink-0 items-center rounded-full px-3 py-1 type-label-sm whitespace-nowrap",
+        tones[tone],
+        className,
+      )}
     >
       {children}
     </span>
