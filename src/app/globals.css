@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Brand feel: calm, trustworthy, friendly, reassuring.
+ * Soft sage/teal primary, warm neutral surfaces, no alarm-red except errors.
+ */
+:root {
+  --background: #f7f5f0;
+  --surface: #ffffff;
+  --foreground: #1f2a28;
+  --muted: #5b6b67;
+  --border: #e3e0d7;
+  --primary: #2f6f62;
+  --primary-hover: #275d52;
+  --primary-soft: #e3efe9;
+  --accent: #c9a96e;
+  --error: #b4533c;
+  /* Placeholder type until Figma design-system tokens are synced. */
+  --font-sans-body: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-display: ui-serif, Georgia, "Times New Roman", serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121816;
+    --surface: #1a2220;
+    --foreground: #e8ece9;
+    --muted: #9aa8a4;
+    --border: #2b3633;
+    --primary: #6fb3a2;
+    --primary-hover: #86c4b4;
+    --primary-soft: #1f3330;
+    --accent: #d9bd86;
+    --error: #e08a74;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-error: var(--error);
+  --font-sans: var(--font-sans-body);
+  --font-display: var(--font-display);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans-body);
+}
