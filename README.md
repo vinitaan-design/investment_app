@@ -38,8 +38,16 @@ npm run build-storybook
 
 ## Database
 
-Schema and row-level security live in `supabase/migrations/`. Apply `0001_init.sql` in the Supabase SQL
-editor (or with the Supabase CLI) on a new project.
+Supabase project **investkea** (region: Mumbai, `ap-south-1`). Migrations in `supabase/migrations/` are
+applied in order; `0001` and `0002` are live.
+
+- **Access model:** signed-out visitors get no table access. Users own their data. A verified advisor can
+  read a client's goals, cash flow and holdings only while that client's data-sharing consent is active.
+  Roles and advisor verification can't be changed from the app.
+- **Tests:** `supabase/tests/rls_smoke.sql` checks the access rules and rolls everything back. Run it in the
+  SQL editor; success is the message "ALL TESTS PASSED (rolled back)".
+- **Verifying an advisor** (admin, in the SQL editor):
+  `update public.advisors set status = 'verified', verified_at = now() where id = '<advisor id>';`
 
 ## Workflow
 
