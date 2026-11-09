@@ -78,6 +78,18 @@ describe("planGoal", () => {
   });
 });
 
+describe("GoalInputError", () => {
+  it("names the field that failed", () => {
+    try {
+      planGoal({ presentCost: 100, years: 5, inflationRate: 0.4, expectedAnnualReturn: 0.05 });
+      expect.unreachable();
+    } catch (e) {
+      expect(e).toBeInstanceOf(GoalInputError);
+      expect((e as GoalInputError).field).toBe("inflationRate");
+    }
+  });
+});
+
 describe("formatINR", () => {
   it("uses Indian digit grouping", () => {
     expect(formatINR(1234567)).toContain("12,34,567");

@@ -1,0 +1,171 @@
+/*
+ * InvestKea design tokens — v0.1
+ * Source of truth: Figma file mR5F8K6PUAKbxg9w1vgNiV and InvestKea_Design_System.xlsx.
+ * Semantic CSS variable names match the "CSS variable" column of the spreadsheet.
+ *
+ * Deviations from Figma (accessibility, WCAG 2.2 AA) are marked "A11Y OVERRIDE" and
+ * listed in docs/design-system.md. They are enforced by src/styles/contrast.test.ts.
+ *
+ * Theme: light only in v1. Dark tokens are defined under [data-theme="dark"] but no
+ * page sets that attribute until the dark palette has been design-reviewed.
+ */
+
+:root {
+  /* ---------- Primitives (do not use directly in components) ---------- */
+  --teal-50: #eef7f6;
+  --teal-100: #d3ece9;
+  --teal-200: #a8d8d2;
+  --teal-300: #74bdb5;
+  --teal-400: #449f96;
+  --teal-500: #2a847c;
+  --teal-600: #1f6b65;
+  --teal-700: #1a5752;
+  --teal-800: #164643;
+  --teal-900: #123836;
+  --teal-950: #0b2422;
+
+  --sand-0: #ffffff;
+  --sand-25: #fcfbf8;
+  --sand-50: #f7f5f0;
+  --sand-100: #efece5;
+  --sand-200: #e2ded5;
+  --sand-300: #cbc6bb;
+  --sand-400: #a6a097;
+  --sand-500: #7f7a72;
+  --sand-600: #625e57;
+  --sand-700: #4a4741;
+  --sand-800: #33312d;
+  --sand-900: #22211e;
+  --sand-950: #161513;
+
+  --peach-50: #fff4ee;
+  --peach-100: #ffe4d5;
+  --peach-200: #ffc9ac;
+  --peach-300: #f9a87f;
+  --peach-400: #ee8a5b;
+  --peach-500: #d96f40;
+  --peach-600: #b85a31;
+  --peach-700: #8f4626;
+  --peach-900: #3a1e12;
+
+  --sage-50: #eef6ef;
+  --sage-100: #d6ebd8;
+  --sage-300: #8fc79c;
+  --sage-500: #3e8e55;
+  --sage-700: #255c37;
+  --sage-900: #14301e;
+
+  --amber-50: #fef6e7;
+  --amber-100: #fce8c3;
+  --amber-300: #f0c266;
+  --amber-500: #c98a12;
+  --amber-700: #7d560b;
+  --amber-900: #3b2905;
+
+  --rose-50: #fdf0ef;
+  --rose-100: #f9d9d6;
+  --rose-300: #ec9c94;
+  --rose-500: #c2493f;
+  --rose-700: #822f28;
+  --rose-900: #3d1613;
+
+  --sky-50: #eef4fb;
+  --sky-100: #d7e5f5;
+  --sky-300: #93b7e0;
+  --sky-500: #3c72b3;
+  --sky-700: #254973;
+  --sky-900: #122438;
+
+  /* ---------- Semantic: light ---------- */
+  color-scheme: light;
+
+  --color-bg-canvas: var(--sand-50);
+  --color-bg-surface: var(--sand-0);
+  --color-bg-surface-raised: var(--sand-0);
+  --color-bg-subtle: var(--sand-100);
+  --color-bg-brand: var(--teal-600);
+  --color-bg-brand-hover: var(--teal-700);
+  --color-bg-brand-subtle: var(--teal-50);
+  --color-bg-accent: var(--peach-400);
+  --color-bg-accent-subtle: var(--peach-50);
+  --color-bg-success-subtle: var(--sage-50);
+  --color-bg-warning-subtle: var(--amber-50);
+  --color-bg-danger: var(--rose-500);
+  --color-bg-danger-subtle: var(--rose-50);
+  --color-bg-info-subtle: var(--sky-50);
+  --color-bg-disabled: var(--sand-100);
+
+  --color-text-primary: var(--sand-900);
+  --color-text-secondary: var(--sand-600);
+  --color-text-tertiary: var(--sand-600); /* A11Y OVERRIDE: Figma sand/500 = 3.91:1 on canvas */
+  --color-text-disabled: var(--sand-400);
+  --color-text-on-brand: var(--sand-0);
+  --color-text-brand: var(--teal-700);
+  --color-text-accent: var(--peach-700); /* A11Y OVERRIDE: Figma peach/600 = 4.27:1 on accent-subtle */
+  --color-text-success: var(--sage-700);
+  --color-text-warning: var(--amber-700);
+  --color-text-danger: var(--rose-700);
+  --color-text-info: var(--sky-700);
+
+  --color-border-default: var(--sand-200);
+  --color-border-strong: var(--sand-500); /* A11Y OVERRIDE: Figma sand/300 = 1.70:1 on surface */
+  --color-border-focus: var(--teal-500);
+  --color-border-danger: var(--rose-500);
+  --color-border-brand: var(--teal-600);
+
+  /* Status side bars for Alert (decorative, paired with an icon and text) */
+  --status-info: var(--sky-500);
+  --status-success: var(--sage-500);
+  --status-warning: var(--amber-500);
+  --status-danger: var(--rose-500);
+
+  /* ---------- Elevation (shadow colour = sand/950) ---------- */
+  --elevation-1: 0 1px 2px rgb(22 21 19 / 0.04), 0 2px 8px rgb(22 21 19 / 0.05);
+  --elevation-2: 0 2px 4px rgb(22 21 19 / 0.04), 0 6px 16px rgb(22 21 19 / 0.07);
+  --elevation-3: 0 4px 8px rgb(22 21 19 / 0.05), 0 16px 40px rgb(22 21 19 / 0.1);
+  --focus-ring: 0 0 0 4px rgb(42 132 124 / 0.3);
+}
+
+/* ---------- Semantic: dark (not yet enabled — awaiting design review) ---------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg-canvas: var(--sand-950);
+  --color-bg-surface: var(--sand-900);
+  --color-bg-surface-raised: var(--sand-800);
+  --color-bg-subtle: var(--sand-800);
+  --color-bg-brand: var(--teal-400);
+  --color-bg-brand-hover: var(--teal-300);
+  --color-bg-brand-subtle: var(--teal-900);
+  --color-bg-accent: var(--peach-400);
+  --color-bg-accent-subtle: var(--peach-900);
+  --color-bg-success-subtle: var(--sage-900);
+  --color-bg-warning-subtle: var(--amber-900);
+  --color-bg-danger: var(--rose-300);
+  --color-bg-danger-subtle: var(--rose-900);
+  --color-bg-info-subtle: var(--sky-900);
+  --color-bg-disabled: var(--sand-800);
+
+  --color-text-primary: var(--sand-50);
+  --color-text-secondary: var(--sand-300);
+  --color-text-tertiary: var(--sand-400);
+  --color-text-disabled: var(--sand-600);
+  --color-text-on-brand: var(--teal-950);
+  --color-text-brand: var(--teal-300);
+  --color-text-accent: var(--peach-300);
+  --color-text-success: var(--sage-300);
+  --color-text-warning: var(--amber-300);
+  --color-text-danger: var(--rose-300);
+  --color-text-info: var(--sky-300);
+
+  --color-border-default: var(--sand-700);
+  --color-border-strong: var(--sand-500); /* A11Y OVERRIDE: Figma sand/600 = 2.50:1 on surface */
+  --color-border-focus: var(--teal-300);
+  --color-border-danger: var(--rose-300);
+  --color-border-brand: var(--teal-400);
+
+  --status-info: var(--sky-300);
+  --status-success: var(--sage-300);
+  --status-warning: var(--amber-300);
+  --status-danger: var(--rose-300);
+}

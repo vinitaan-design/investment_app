@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { buttonClasses } from "@/components/ui/button";
+import { GoalCard } from "@/components/ui/goal-card";
 
 const features = [
   {
@@ -10,34 +12,42 @@ const features = [
     body: "Track income and expenses in one place and spot patterns without spreadsheets.",
   },
   {
-    title: "Talk to a certified consultant",
-    body: "Book time with a registered professional when you want a second pair of eyes.",
+    title: "Talk to a verified consultant",
+    body: "Book time with a registered professional when you want a second pair of eyes. You choose what they see.",
   },
 ];
 
 export default function Home() {
   return (
     <div className="space-y-16">
-      <section className="max-w-2xl space-y-6 pt-6">
-        <h1 className="font-display text-4xl leading-tight sm:text-5xl">
-          Money planning that feels calm, not complicated.
-        </h1>
-        <p className="text-lg text-muted">
-          Set your goals, see the real numbers, and move forward at your own pace.
-        </p>
-        <Link
-          href="/goals"
-          className="inline-block rounded-full bg-primary px-6 py-3 font-medium text-white transition hover:bg-primary-hover"
-        >
-          Try the goal planner
-        </Link>
+      <section className="grid items-center gap-10 pt-4 md:grid-cols-[3fr_2fr]">
+        <div className="space-y-6">
+          <h1 className="type-display-lg text-fg">Money planning that feels calm, not complicated.</h1>
+          <p className="type-body-lg text-fg-secondary">
+            Set your goals, see the real numbers, and move forward at your own pace. You&apos;re in control,
+            and you can stop anytime.
+          </p>
+          <Link href="/goals" className={buttonClasses("primary", "lg")}>
+            Try the goal planner
+          </Link>
+        </div>
+        <div aria-label="Example goal" role="figure">
+          <GoalCard
+            title="Emergency fund"
+            saved={188000}
+            target={300000}
+            status="on-track"
+            onTrackDate={new Date(2027, 5, 1)}
+          />
+          <p className="mt-2 type-caption text-fg-tertiary">Example only</p>
+        </div>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-3">
+      <section aria-label="What you can do" className="grid gap-4 sm:grid-cols-3">
         {features.map((f) => (
-          <article key={f.title} className="rounded-2xl border border-border bg-surface p-6">
-            <h2 className="mb-2 font-medium">{f.title}</h2>
-            <p className="text-sm text-muted">{f.body}</p>
+          <article key={f.title} className="space-y-2 rounded-lg border border-line bg-surface p-6 shadow-1">
+            <h2 className="type-h4 text-fg">{f.title}</h2>
+            <p className="type-body text-fg-secondary">{f.body}</p>
           </article>
         ))}
       </section>

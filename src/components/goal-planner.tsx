@@ -1,7 +1,9 @@
 "use client";
 
-import { useId, useState } from "react";
-import { GoalInputError, formatINR, planGoal, type GoalResult } from "@/lib/goal-calculator";
+import { useState } from "react";
+import { Alert } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { GoalInputError, formatINR, planGoal, type GoalInput, type GoalResult } from "@/lib/goal-calculator";
 
 interface FieldState {
   presentCost: string;
@@ -20,115 +22,131 @@ const initial: FieldState = {
   currentSavings: "0",
 };
 
-function compute(f: FieldState): { result?: GoalResult; error?: string } {
+/** Maps calculator fields to form fields so errors land on the right input. */
+const fieldFor: Record<keyof GoalInput, keyof FieldState> = {
+  presentCost: "presentCost",
+  years: "years",
+  inflationRate: "inflation",
+  expectedAnnualReturn: "growth",
+  currentSavings: "currentSavings",
+};
+
+/** Empty input becomes NaN (not 0) so the user is told the field is missing. */
+function parse(value: string): number {
+  return value.trim() === "" ? Number.NaN : Number(value);
+}
+
+type Outcome = { result: GoalResult } | { error: { field: keyof FieldState; message: string } };
+
+export function compute(f: FieldState): Outcome {
   try {
     return {
       result: planGoal({
-        presentCost: Number(f.presentCost),
-        years: Number(f.years),
-        inflationRate: Number(f.inflation) / 100,
-        expectedAnnualReturn: Number(f.growth) / 100,
-        currentSavings: Number(f.currentSavings || 0),
+        presentCost: parse(f.presentCost),
+        years: parse(f.years),
+        inflationRate: parse(f.inflation) / 100,
+        expectedAnnualReturn: parse(f.growth) / 100,
+        currentSavings: f.currentSavings.trim() === "" ? 0 : Number(f.currentSavings),
       }),
     };
   } catch (e) {
-    if (e instanceof GoalInputError) return { error: e.message };
+    if (e instanceof GoalInputError) {
+      return { error: { field: fieldFor[e.field], message: e.message } };
+    }
     throw e;
   }
 }
 
-function Field(props: {
-  label: string;
-  hint?: string;
-  value: string;
-  suffix?: string;
-  onChange: (v: string) => void;
-}) {
-  const id = useId();
-  return (
-    <div className="space-y-1">
-      <label htmlFor={id} className="block text-sm font-medium">
-        {props.label}
-      </label>
-      <div className="flex items-center rounded-xl border border-border bg-surface focus-within:border-primary">
-        <input
-          id={id}
-          type="number"
-          inputMode="decimal"
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-          className="w-full rounded-xl bg-transparent px-3 py-2 outline-none"
-        />
-        {props.suffix && <span className="pr-3 text-sm text-muted">{props.suffix}</span>}
-      </div>
-      {props.hint && <p className="text-xs text-muted">{props.hint}</p>}
-    </div>
-  );
-}
-
 export function GoalPlanner() {
   const [fields, setFields] = useState<FieldState>(initial);
-  const set = (key: keyof FieldState) => (v: string) => setFields((f) => ({ ...f, [key]: v }));
-  const { result, error } = compute(fields);
+  const set = (key: keyof FieldState) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setFields((f) => ({ ...f, [key]: e.target.value }));
+
+  const outcome = compute(fields);
+  const errorFor = (key: keyof FieldState) =>
+    "error" in outcome && outcome.error.field === key ? outcome.error.message : undefined;
+
+  const numberProps = { type: "number", inputMode: "decimal" as const, min: 0 };
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <form
-        className="space-y-4 rounded-2xl border border-border bg-surface p-6"
+        noValidate
+        aria-label="Goal details"
+        className="space-y-5 rounded-lg border border-line bg-surface p-6 shadow-1"
         onSubmit={(e) => e.preventDefault()}
       >
-        <Field label="Goal cost today" suffix="₹" value={fields.presentCost} onChange={set("presentCost")} />
-        <Field label="Years until goal" value={fields.years} onChange={set("years")} />
-        <Field
+        <Input
+          {...numberProps}
+          label="Goal cost today"
+          prefix="₹"
+          value={fields.presentCost}
+          onChange={set("presentCost")}
+          error={errorFor("presentCost")}
+        />
+        <Input
+          {...numberProps}
+          label="Years until goal"
+          value={fields.years}
+          onChange={set("years")}
+          error={errorFor("years")}
+        />
+        <Input
+          {...numberProps}
           label="Expected inflation"
-          suffix="% / yr"
-          hint="Education and healthcare often rise faster than general prices."
+          suffix="% a year"
+          helper="Education and healthcare costs often rise faster than general prices."
           value={fields.inflation}
           onChange={set("inflation")}
+          error={errorFor("inflation")}
         />
-        <Field
+        <Input
+          {...numberProps}
           label="Expected growth of your savings"
-          suffix="% / yr"
-          hint="Your own assumption. Use 0 if the money will sit in a savings account."
+          suffix="% a year"
+          helper="Your own assumption. Use 0 if the money will stay in a savings account."
           value={fields.growth}
           onChange={set("growth")}
+          error={errorFor("growth")}
         />
-        <Field
+        <Input
+          {...numberProps}
           label="Already saved for this goal"
-          suffix="₹"
+          prefix="₹"
           value={fields.currentSavings}
           onChange={set("currentSavings")}
+          error={errorFor("currentSavings")}
         />
       </form>
 
-      <section aria-live="polite" className="space-y-4 rounded-2xl bg-primary-soft p-6">
-        {error ? (
-          <p role="alert" className="text-error">
-            {error}
-          </p>
-        ) : result ? (
+      <section aria-live="polite" aria-label="Your plan" className="space-y-5 rounded-lg bg-brand-subtle p-6">
+        {"error" in outcome ? (
+          <Alert tone="info" title="We need one more detail">
+            {outcome.error.message} Your plan will update as soon as you do.
+          </Alert>
+        ) : (
           <>
-            <div>
-              <p className="text-sm text-muted">Estimated cost in {fields.years} years</p>
-              <p className="font-display text-3xl">{formatINR(result.futureCost)}</p>
+            <div className="space-y-1">
+              <p className="type-body-sm text-fg-secondary">Estimated cost in {fields.years} years</p>
+              <p className="type-numeric-hero text-fg">{formatINR(outcome.result.futureCost)}</p>
             </div>
-            <div>
-              <p className="text-sm text-muted">Set aside each month</p>
-              <p className="font-display text-3xl text-primary" data-testid="monthly-saving">
-                {formatINR(result.monthlySaving)}
+            <div className="space-y-1">
+              <p className="type-body-sm text-fg-secondary">Set aside each month</p>
+              <p className="type-numeric-hero text-fg-brand" data-testid="monthly-saving">
+                {formatINR(outcome.result.monthlySaving)}
               </p>
             </div>
-            <dl className="grid grid-cols-2 gap-2 text-sm">
-              <dt className="text-muted">Your savings could grow to</dt>
-              <dd className="text-right">{formatINR(result.futureValueOfSavings)}</dd>
-              <dt className="text-muted">Gap to close</dt>
-              <dd className="text-right">{formatINR(result.shortfall)}</dd>
+            <dl className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 type-body">
+              <dt className="text-fg-secondary">Your savings could grow to</dt>
+              <dd className="text-right tabular-nums">{formatINR(outcome.result.futureValueOfSavings)}</dd>
+              <dt className="text-fg-secondary">Gap to close</dt>
+              <dd className="text-right tabular-nums">{formatINR(outcome.result.shortfall)}</dd>
             </dl>
-            <p className="text-xs text-muted">
+            <p className="type-caption text-fg-tertiary">
               Estimates only, based on the rates you entered. Actual inflation and growth will differ.
             </p>
           </>
-        ) : null}
+        )}
       </section>
     </div>
   );

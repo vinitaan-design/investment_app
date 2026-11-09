@@ -74,7 +74,7 @@ Targets are not set yet. They need a baseline from the first weeks of usage.
 - Given I enter ₹10,00,000, 10 years, 6% inflation, 0% growth, no savings
   When the results update
   Then the future cost shows ≈ ₹17,90,848 and monthly saving shows future cost ÷ 120.
-- Given years = 0, When the results update, Then I see "Years must be between 0 and 60." and no result.
+- Given years = 0, When the results update, Then the years field shows "Enter a number of years above 0, up to 60." and no result.
 
 **US-2 Consent** — As a planner, I want to control which advisor sees my data so that my information stays
 private.

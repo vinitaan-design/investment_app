@@ -1,57 +1,182 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "../styles/tokens.css";
 
 /*
- * Design tokens. Brand feel: calm, trustworthy, friendly, reassuring.
- * Soft sage/teal primary, warm neutral surfaces, no alarm-red except errors.
+ * Tailwind theme = InvestKea tokens only. Tailwind's default colours, radii and
+ * shadows are removed so components cannot bypass the design system.
+ *
+ * Naming: bg-* fills use the surface name (bg-canvas, bg-brand); text colours use
+ * fg-* (text-fg, text-fg-secondary); borders use line-* (border-line-strong).
  */
-:root {
-  --background: #f7f5f0;
-  --surface: #ffffff;
-  --foreground: #1f2a28;
-  --muted: #5b6b67;
-  --border: #e3e0d7;
-  --primary: #2f6f62;
-  --primary-hover: #275d52;
-  --primary-soft: #e3efe9;
-  --accent: #c9a96e;
-  --error: #b4533c;
-  /* Placeholder type until Figma design-system tokens are synced. */
-  --font-sans-body: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
-  --font-display: ui-serif, Georgia, "Times New Roman", serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121816;
-    --surface: #1a2220;
-    --foreground: #e8ece9;
-    --muted: #9aa8a4;
-    --border: #2b3633;
-    --primary: #6fb3a2;
-    --primary-hover: #86c4b4;
-    --primary-soft: #1f3330;
-    --accent: #d9bd86;
-    --error: #e08a74;
-  }
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-soft: var(--primary-soft);
-  --color-accent: var(--accent);
-  --color-error: var(--error);
-  --font-sans: var(--font-sans-body);
-  --font-display: var(--font-display);
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  --color-canvas: var(--color-bg-canvas);
+  --color-surface: var(--color-bg-surface);
+  --color-surface-raised: var(--color-bg-surface-raised);
+  --color-subtle: var(--color-bg-subtle);
+  --color-brand: var(--color-bg-brand);
+  --color-brand-hover: var(--color-bg-brand-hover);
+  --color-brand-subtle: var(--color-bg-brand-subtle);
+  --color-accent: var(--color-bg-accent);
+  --color-accent-subtle: var(--color-bg-accent-subtle);
+  --color-success-subtle: var(--color-bg-success-subtle);
+  --color-warning-subtle: var(--color-bg-warning-subtle);
+  --color-danger: var(--color-bg-danger);
+  --color-danger-subtle: var(--color-bg-danger-subtle);
+  --color-info-subtle: var(--color-bg-info-subtle);
+  --color-disabled: var(--color-bg-disabled);
+
+  --color-fg: var(--color-text-primary);
+  --color-fg-secondary: var(--color-text-secondary);
+  --color-fg-tertiary: var(--color-text-tertiary);
+  --color-fg-disabled: var(--color-text-disabled);
+  --color-fg-on-brand: var(--color-text-on-brand);
+  --color-fg-brand: var(--color-text-brand);
+  --color-fg-accent: var(--color-text-accent);
+  --color-fg-success: var(--color-text-success);
+  --color-fg-warning: var(--color-text-warning);
+  --color-fg-danger: var(--color-text-danger);
+  --color-fg-info: var(--color-text-info);
+
+  --color-line: var(--color-border-default);
+  --color-line-strong: var(--color-border-strong);
+  --color-line-focus: var(--color-border-focus);
+  --color-line-danger: var(--color-border-danger);
+  --color-line-brand: var(--color-border-brand);
+
+  --color-status-info: var(--status-info);
+  --color-status-success: var(--status-success);
+  --color-status-warning: var(--status-warning);
+  --color-status-danger: var(--status-danger);
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --radius-none: 0px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  --shadow-1: var(--elevation-1);
+  --shadow-2: var(--elevation-2);
+  --shadow-3: var(--elevation-3);
+  --shadow-focus: var(--focus-ring);
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans-body);
+/* ---------- Typography styles (Figma text styles; letter-spacing % → em) ---------- */
+@utility type-display-lg {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  letter-spacing: -0.01em;
+}
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -0.005em;
+}
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.005em;
+}
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+}
+@utility type-h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 24px;
+}
+@utility type-numeric-hero {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-numeric {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  font-variant-numeric: tabular-nums;
+}
+@utility type-body-lg {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 26px;
+}
+@utility type-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+}
+@utility type-body-strong {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 24px;
+}
+@utility type-body-sm {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+}
+@utility type-label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+}
+@utility type-label-sm {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+}
+@utility type-caption {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.005em;
+}
+
+@layer base {
+  body {
+    background: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 24px;
+  }
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
 }

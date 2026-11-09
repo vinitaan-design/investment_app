@@ -30,24 +30,43 @@ export interface GoalResult {
   monthlySaving: number;
 }
 
-export class GoalInputError extends Error {}
+/** Invalid input. `field` names the input to highlight in the UI. */
+export class GoalInputError extends Error {
+  constructor(
+    message: string,
+    readonly field: keyof GoalInput,
+  ) {
+    super(message);
+    this.name = "GoalInputError";
+  }
+}
 
 function assertValid(input: GoalInput): void {
-  const { presentCost, years, inflationRate, expectedAnnualReturn } = input;
   const currentSavings = input.currentSavings ?? 0;
-  const numbers = [presentCost, years, inflationRate, expectedAnnualReturn, currentSavings];
-  if (numbers.some((n) => !Number.isFinite(n))) {
-    throw new GoalInputError("All values must be numbers.");
-  }
-  if (presentCost <= 0) throw new GoalInputError("Goal cost must be greater than 0.");
-  if (years <= 0 || years > 60) throw new GoalInputError("Years must be between 0 and 60.");
-  if (currentSavings < 0) throw new GoalInputError("Current savings cannot be negative.");
-  if (inflationRate < 0 || inflationRate > 0.3) {
-    throw new GoalInputError("Inflation must be between 0% and 30%.");
-  }
-  if (expectedAnnualReturn < 0 || expectedAnnualReturn > 0.3) {
-    throw new GoalInputError("Expected growth must be between 0% and 30%.");
-  }
+  const check = (ok: boolean, field: keyof GoalInput, message: string) => {
+    if (!ok) throw new GoalInputError(message, field);
+  };
+  const finite = Number.isFinite;
+
+  check(finite(input.presentCost) && input.presentCost > 0, "presentCost", "Enter a goal cost above ₹0.");
+  check(
+    finite(input.years) && input.years > 0 && input.years <= 60,
+    "years",
+    "Enter a number of years above 0, up to 60.",
+  );
+  check(
+    finite(input.inflationRate) && input.inflationRate >= 0 && input.inflationRate <= 0.3,
+    "inflationRate",
+    "Enter an inflation rate between 0% and 30%.",
+  );
+  check(
+    finite(input.expectedAnnualReturn) &&
+      input.expectedAnnualReturn >= 0 &&
+      input.expectedAnnualReturn <= 0.3,
+    "expectedAnnualReturn",
+    "Enter an expected growth rate between 0% and 30%.",
+  );
+  check(finite(currentSavings) && currentSavings >= 0, "currentSavings", "Enter ₹0 or more for savings.");
 }
 
 /** Cost of something in the future, given today's price and inflation. */
