@@ -3,8 +3,8 @@
  * Source of truth: Figma file mR5F8K6PUAKbxg9w1vgNiV and InvestKea_Design_System.xlsx.
  * Semantic CSS variable names match the "CSS variable" column of the spreadsheet.
  *
- * Deviations from Figma (accessibility, WCAG 2.2 AA) are marked "A11Y OVERRIDE" and
- * listed in docs/design-system.md. They are enforced by src/styles/contrast.test.ts.
+ * Deviations from Figma come from the spreadsheet's "WCAG Audit" sheet, are marked
+ * "WCAG AUDIT", and are listed in docs/design-system.md. They are enforced by tokens.test.ts.
  *
  * Theme: light only in v1. Dark tokens are defined under [data-theme="dark"] but no
  * page sets that attribute until the dark palette has been design-reviewed.
@@ -96,19 +96,19 @@
   --color-bg-disabled: var(--sand-100);
 
   --color-text-primary: var(--sand-900);
-  --color-text-secondary: var(--sand-600);
-  --color-text-tertiary: var(--sand-600); /* A11Y OVERRIDE: Figma sand/500 = 3.91:1 on canvas */
+  --color-text-secondary: var(--sand-700); /* WCAG AUDIT: keeps secondary darker than tertiary */
+  --color-text-tertiary: var(--sand-600); /* WCAG AUDIT: Figma sand/500 = 3.91:1 on canvas */
   --color-text-disabled: var(--sand-400);
   --color-text-on-brand: var(--sand-0);
   --color-text-brand: var(--teal-700);
-  --color-text-accent: var(--peach-700); /* A11Y OVERRIDE: Figma peach/600 = 4.27:1 on accent-subtle */
+  --color-text-accent: var(--peach-700); /* WCAG AUDIT: Figma peach/600 = 4.27:1 on accent-subtle */
   --color-text-success: var(--sage-700);
   --color-text-warning: var(--amber-700);
   --color-text-danger: var(--rose-700);
   --color-text-info: var(--sky-700);
 
   --color-border-default: var(--sand-200);
-  --color-border-strong: var(--sand-500); /* A11Y OVERRIDE: Figma sand/300 = 1.70:1 on surface */
+  --color-border-strong: var(--sand-500); /* WCAG AUDIT: Figma sand/300 = 1.70:1 on surface */
   --color-border-focus: var(--teal-500);
   --color-border-danger: var(--rose-500);
   --color-border-brand: var(--teal-600);
@@ -123,7 +123,10 @@
   --elevation-1: 0 1px 2px rgb(22 21 19 / 0.04), 0 2px 8px rgb(22 21 19 / 0.05);
   --elevation-2: 0 2px 4px rgb(22 21 19 / 0.04), 0 6px 16px rgb(22 21 19 / 0.07);
   --elevation-3: 0 4px 8px rgb(22 21 19 / 0.05), 0 16px 40px rgb(22 21 19 / 0.1);
-  --focus-ring: 0 0 0 4px rgb(42 132 124 / 0.3);
+  /* WCAG AUDIT: solid 2px gap + 3px teal/500 ring (the 30% glow failed 3:1) */
+  --focus-ring-colour: var(--teal-500);
+  --focus-ring-gap: var(--sand-0);
+  --focus-ring: 0 0 0 2px var(--focus-ring-gap), 0 0 0 5px var(--focus-ring-colour);
 }
 
 /* ---------- Semantic: dark (not yet enabled — awaiting design review) ---------- */
@@ -159,8 +162,12 @@
   --color-text-info: var(--sky-300);
 
   --color-border-default: var(--sand-700);
-  --color-border-strong: var(--sand-500); /* A11Y OVERRIDE: Figma sand/600 = 2.50:1 on surface */
+  --color-border-strong: var(--sand-500); /* WCAG AUDIT: Figma sand/600 = 2.50:1 on surface */
   --color-border-focus: var(--teal-300);
+  /* Redeclared so the ring picks up the dark gap colour. */
+  --focus-ring-colour: var(--teal-300);
+  --focus-ring-gap: var(--sand-900);
+  --focus-ring: 0 0 0 2px var(--focus-ring-gap), 0 0 0 5px var(--focus-ring-colour);
   --color-border-danger: var(--rose-300);
   --color-border-brand: var(--teal-400);
 

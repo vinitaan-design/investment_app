@@ -99,12 +99,3 @@ export function planGoal(input: GoalInput): GoalResult {
   );
   return { futureCost, futureValueOfSavings, shortfall, monthlySaving };
 }
-
-/** Format rupees in Indian digit grouping, no decimals. */
-export function formatINR(value: number): string {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(value);
-}

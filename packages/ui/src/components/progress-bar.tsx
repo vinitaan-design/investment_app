@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn";
+import { cn } from "../lib/cn";
 
 /** Clamp a value/max pair to a whole-number percentage between 0 and 100. */
 export function toPercent(value: number, max: number): number {

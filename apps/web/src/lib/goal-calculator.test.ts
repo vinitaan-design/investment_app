@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GoalInputError, formatINR, inflate, monthlyContribution, planGoal } from "./goal-calculator";
+import { GoalInputError, inflate, monthlyContribution, planGoal } from "./goal-calculator";
 
 describe("inflate", () => {
   it("compounds annually", () => {
@@ -87,11 +87,5 @@ describe("GoalInputError", () => {
       expect(e).toBeInstanceOf(GoalInputError);
       expect((e as GoalInputError).field).toBe("inflationRate");
     }
-  });
-});
-
-describe("formatINR", () => {
-  it("uses Indian digit grouping", () => {
-    expect(formatINR(1234567)).toContain("12,34,567");
   });
 });

@@ -1,7 +1,13 @@
-@import "tailwindcss";
+/*
+ * @investkea/ui styles. Import AFTER `@import "tailwindcss";` in the app's CSS entry:
+ *
+ *   @import "tailwindcss";
+ *   @import "@investkea/ui/styles.css";
+ *   @source "<path to>/packages/ui/src";
+ */
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/plus-jakarta-sans";
-@import "../styles/tokens.css";
+@import "./tokens/tokens.css";
 
 /*
  * Tailwind theme = InvestKea tokens only. Tailwind's default colours, radii and

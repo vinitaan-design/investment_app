@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, type InputHTMLAttributes, type ReactNode } from "react";
-import { cn } from "@/lib/cn";
+import { cn } from "../lib/cn";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "id" | "prefix"> {
   /** Always visible above the field. */

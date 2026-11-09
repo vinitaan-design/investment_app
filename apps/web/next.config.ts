@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  // The design system ships TypeScript source; Next compiles it with the app.
+  transpilePackages: ["@investkea/ui"],
   turbopack: {
     rules: {
       "*.css": {

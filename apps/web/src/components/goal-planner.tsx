@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Alert } from "@/components/ui/alert";
-import { Input } from "@/components/ui/input";
-import { GoalInputError, formatINR, planGoal, type GoalInput, type GoalResult } from "@/lib/goal-calculator";
+import { Alert, Input, formatINR } from "@investkea/ui";
+import { GoalInputError, planGoal, type GoalInput, type GoalResult } from "@/lib/goal-calculator";
 
 interface FieldState {
   presentCost: string;

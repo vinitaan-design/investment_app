@@ -1,3 +1,4 @@
+// @vitest-environment node
 /**
  * Guards the design tokens:
  *  - every text/background pair used in components meets WCAG 2.2 AA
@@ -70,9 +71,17 @@ const textPairs: Array<[string, string]> = [
   ["color-text-info", "color-bg-info-subtle"],
   ["color-text-primary", "color-bg-info-subtle"],
   ["color-text-primary", "color-bg-danger-subtle"],
+  ["color-text-secondary", "color-bg-info-subtle"],
 ];
 
+/** Hierarchy: secondary text must stay at least as strong as tertiary. */
+const hierarchy: Array<[string, string]> = [["color-text-secondary", "color-text-tertiary"]];
+
 const borderPairs: Array<[string, string]> = [
+  // WCAG 2.4.11 focus appearance: ring colour vs the backgrounds it sits on.
+  ["focus-ring-colour", "color-bg-canvas"],
+  ["focus-ring-colour", "color-bg-surface"],
+  ["focus-ring-colour", "color-bg-brand-subtle"],
   ["color-border-strong", "color-bg-surface"],
   ["color-border-danger", "color-bg-surface"],
   ["color-border-focus", "color-bg-surface"],
@@ -88,6 +97,13 @@ describe.each([
 
   it.each(borderPairs)("%s on %s meets 3:1", (fg, bg) => {
     expect(contrast(resolve(theme, fg), resolve(theme, bg))).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe("text hierarchy (light)", () => {
+  it.each(hierarchy)("%s is at least as dark as %s on canvas", (strong, weak) => {
+    const bg = resolve(light, "color-bg-canvas");
+    expect(contrast(resolve(light, strong), bg)).toBeGreaterThanOrEqual(contrast(resolve(light, weak), bg));
   });
 });
 

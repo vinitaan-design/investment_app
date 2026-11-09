@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn";
+import { cn } from "../lib/cn";
 
 export type BadgeTone = "neutral" | "brand" | "success" | "warning" | "danger" | "info";
 

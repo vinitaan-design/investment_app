@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { buttonClasses } from "@/components/ui/button";
-import { GoalCard } from "@/components/ui/goal-card";
+import { GoalCard, buttonClasses } from "@investkea/ui";
 
 const features = [
   {

@@ -1,6 +1,6 @@
-import { Badge, type BadgeTone } from "@/components/ui/badge";
-import { ProgressBar, toPercent } from "@/components/ui/progress-bar";
-import { formatINR } from "@/lib/goal-calculator";
+import { Badge, type BadgeTone } from "./badge";
+import { ProgressBar, toPercent } from "./progress-bar";
+import { formatINR } from "../lib/format";
 
 export type GoalStatus = "on-track" | "behind" | "achieved";
 
