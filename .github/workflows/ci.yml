@@ -22,8 +22,8 @@ jobs:
         run: npm test
       - name: Build web app
         run: npm run build
-      - name: Check design system CSS reached the app
-        run: npm run check:css
+      - name: Check build output (design system CSS, private routes not static)
+        run: npm run check:build
       - name: Build Storybook
         run: npm run build-storybook
       - name: Upload Storybook

@@ -1,7 +1,10 @@
 // @vitest-environment jsdom
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// The save action is a Server Action; the planner's own behaviour is tested here.
+vi.mock("@/app/(public)/goals/actions", () => ({ saveGoal: vi.fn(async () => ({ status: "idle" })) }));
 import { GoalPlanner, compute } from "./goal-planner";
 
 const valid = { presentCost: "1000000", years: "10", inflation: "6", growth: "0", currentSavings: "0" };
@@ -44,6 +47,13 @@ describe("GoalPlanner", () => {
     expect(years).toHaveAccessibleDescription("Enter a number of years above 0, up to 60.");
     expect(screen.queryByTestId("monthly-saving")).not.toBeInTheDocument();
     expect(screen.getByLabelText("Goal cost today")).not.toHaveAttribute("aria-invalid");
+  });
+
+  it("offers to save the goal with a named, labelled field", () => {
+    render(<GoalPlanner />);
+    const form = screen.getByRole("form", { name: "Save this goal" });
+    expect(form).toContainElement(screen.getByLabelText("Goal name"));
+    expect(screen.getByRole("button", { name: "Save this goal" })).toBeInTheDocument();
   });
 
   it("recovers when the input is fixed", async () => {

@@ -15,7 +15,8 @@
     "test": "npm run test --workspaces",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check:css": "npm run check:css -w @investkea/web"
+    "check:css": "npm run check:css -w @investkea/web",
+    "check:build": "npm run check:css -w @investkea/web && npm run check:private-routes -w @investkea/web"
   },
   "devDependencies": {
     "prettier": "^3.9.10"

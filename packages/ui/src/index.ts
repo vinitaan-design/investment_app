@@ -41,3 +41,18 @@ export { Tabs, type TabItem, type TabsProps } from "./components/tabs";
 export { Avatar, initials, type AvatarProps, type AvatarSize } from "./components/avatar";
 export { StatCard, type StatCardProps, type StatTrend } from "./components/stat-card";
 export { GoalCard, type GoalCardProps, type GoalStatus } from "./components/goal-card";
+
+// App structure
+export {
+  AppShell,
+  SideNav,
+  activeIndex,
+  isActivePath,
+  type AppShellProps,
+  type LinkLikeProps,
+  type NavItem,
+  type SideNavProps,
+} from "./components/app-shell";
+export { DataTable, type DataTableColumn, type DataTableProps } from "./components/data-table";
+export { List, ListRow, type ListRowProps } from "./components/list-row";
+export { ConsultantCard, type ConsultantCardProps } from "./components/consultant-card";

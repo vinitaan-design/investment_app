@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Alert, Input, formatINR } from "@investkea/ui";
+import { useActionState, useState } from "react";
+import Link from "next/link";
+import { Alert, Button, Input, formatINR } from "@investkea/ui";
+import { saveGoal } from "@/app/(public)/goals/actions";
+import { idle } from "@/lib/actions";
 import { GoalInputError, planGoal, type GoalInput, type GoalResult } from "@/lib/goal-calculator";
 
 interface FieldState {
@@ -144,9 +147,55 @@ export function GoalPlanner() {
             <p className="type-caption text-fg-tertiary">
               Estimates only, based on the rates you entered. Actual inflation and growth will differ.
             </p>
+            <SaveGoal fields={fields} />
           </>
         )}
       </section>
     </div>
+  );
+}
+
+function SaveGoal({ fields }: { fields: FieldState }) {
+  const [state, action, pending] = useActionState(saveGoal, idle);
+  const errors = state.status === "error" ? (state.fieldErrors ?? {}) : {};
+  return (
+    <form
+      action={action}
+      noValidate
+      aria-label="Save this goal"
+      className="space-y-3 border-t border-line pt-5"
+    >
+      <input type="hidden" name="presentCost" value={fields.presentCost} />
+      <input type="hidden" name="years" value={fields.years} />
+      <input type="hidden" name="inflation" value={fields.inflation} />
+      <input type="hidden" name="growth" value={fields.growth} />
+      <input type="hidden" name="currentSavings" value={fields.currentSavings} />
+      <Input
+        name="name"
+        label="Goal name"
+        placeholder="e.g. House down payment"
+        maxLength={120}
+        error={errors.name}
+      />
+      <Button type="submit" variant="secondary" loading={pending}>
+        Save this goal
+      </Button>
+      <div aria-live="polite">
+        {state.status === "success" && (
+          <p className="type-body-sm text-fg-success">
+            {state.message}{" "}
+            <Link href="/app" className="underline underline-offset-2">
+              View overview
+            </Link>
+          </p>
+        )}
+        {state.status === "error" && !errors.name && (
+          <p className="type-body-sm text-fg-danger">{state.message}</p>
+        )}
+      </div>
+      <p className="type-caption text-fg-tertiary">
+        Saving needs a free account. You&apos;ll be asked to sign in.
+      </p>
+    </form>
   );
 }
